@@ -568,6 +568,7 @@
 		justify-content: center;
 		height: 50px;
 		border-top: 1px solid #e1e1e1;
+		position: relative;
 	}
 	
 	.form-inline .gap{
@@ -865,6 +866,60 @@
 		transition: all 2s;
 		transform: scale(0.7) translateZ(-50px); /* 缩小并向后位移 */
 	}
+	
+	/*录音效果*/
+	#stop_record{
+		height: 30px;
+		width: 30px;
+		border-radius: 66px;
+		background: linear-gradient(145deg, #f0f0f0, #cacaca);
+		box-shadow:  5px 5px 26px #6e6e6e,
+		             -5px -5px 26px #ffffff;
+	}
+	
+	#recordGroup, #message {
+	    transition: all 0.5s ease-in-out;
+	}
+	
+	#recordGroup{
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		left: 100px;
+		top:8px;
+	}
+	
+	.hidden {
+	    opacity: 0;
+	    visibility: hidden;
+	}
+	
+	#record_wrapper{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		background-color: blue;
+		position: relative;
+	}
+	
+	#record_wrapper img {
+	  height: 25px; 
+	  width: 25px; 
+	  margin-right: 2px;
+	  margin-bottom: 5px;
+	  object-fit: cover; /* 保持图片的宽高比，可能会裁剪图片 */
+	}
+	
+	#recordLine{
+		height: 20px;
+		width: 150px;
+	}
+	
 	/* 更多的CSS样式可以根据需要进行添加，以确保视觉效果符合设计要求。 */
 	
     </style>
@@ -967,8 +1022,26 @@
 				    <img id="voice-image" src="./icon/voice.png" alt="voice" onclick="changeImage()" />
 				</div>
 				<div class="gap"></div> 	<!-- 间隔竖线 -->
+				
 			    <textarea class="form-control" id="message" placeholder="Type your message here..."></textarea>
-				<img id="microphone-icon" src="./icon/microphone.png" alt="microphone" style="display:none;" />
+				
+				<div id="recordGroup" class="hidden">
+				    <div id="record_wrapper">
+				        <img id="recording" src="./icon/recording.png" alt="microphone" />
+				    </div>
+				    <div id="stop_wrapper" style="display:none;">
+				        <div id="stop_record"></div>
+				    </div>
+				    <img id="recordLine" src="./icon/recordLine.png" alt="Line" />
+				</div>
+
+
+				<!-- <div>
+				    <label for="btn-record"></label>
+				    <button class="btn btn-primary" id="btn_start_record">Start Recording</button>
+				    <button class="btn btn-primary" id="btn_stop_record" disabled>Stop Recording</button>
+				</div> -->
+				
 				<!-- 按钮包裹的提交 -->
 			   <button type="submit" class="btn btn-default" onclick="start()">
 				   <img class="submit" src="./icon/submit.png" alt="submit" />
@@ -1039,11 +1112,7 @@
         <input type="hidden" id="sessionid" value="0">
     </div>
 	
-	<div>
-	    <label for="btn-record"></label>
-	    <button class="btn btn-primary" id="btn_start_record">Start Recording</button>
-	    <button class="btn btn-primary" id="btn_stop_record" disabled>Stop Recording</button>
-	</div>
+	
 	
 </div>
 
@@ -1058,6 +1127,8 @@
 
 <script>
 	//DDsheng修改的	
+	
+	
 	document.addEventListener('DOMContentLoaded', function() {
 	    // 获取 'avatar-background' 元素
 	    var avatarBackground = document.getElementById('avatar-background');
@@ -1104,14 +1175,15 @@
 	    // 功能元素选中
 	    $('.option-item').click(function() {
 			
-			var bannercontainerElement = document.getElementById('bannercontainer');
 	        var imgContainer = $(this).find('.img_container');
 			
 	        if (imgContainer.hasClass('selected')) {
 	            imgContainer.removeClass('selected');
+				bannerContainer.classList.remove('show');
 	        } else {
 	            $('.img_container').removeClass('selected');
 	            imgContainer.addClass('selected');
+				
 	        }
 			
 	    });
@@ -1123,6 +1195,7 @@
 	        // 检查点击的目标是否在轮播区域内
 	        if (!bannerContainer.contains(event.target) && !$(event.target).closest('.option-item').length) {
 	            $('.img_container').removeClass('selected');
+				bannerContainer.classList.remove('show');
 	        }
 	    });
 	});
@@ -1147,6 +1220,19 @@
 			image.src = newSrc;
 	        image.classList.remove('changing');
 	    }, 300); // 300毫秒后移除，与 CSS 中的过渡时间相匹配
+		
+		var message = document.getElementById('message');
+		var recordGroup = document.getElementById('recordGroup');
+		var voiceImage = document.getElementById('voice-image');
+	
+		// 切换显示状态
+		if (message.classList.contains('hidden')) {
+		    message.classList.remove('hidden');
+		    recordGroup.classList.add('hidden');
+		} else {
+		    message.classList.add('hidden');
+		    recordGroup.classList.remove('hidden');
+		}
 	}
 	
 </script>
