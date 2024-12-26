@@ -55,7 +55,7 @@ function start() {
     };
 	
 	var videoElement = document.getElementById('video');
-	videoElement.src='active.mp4';
+	videoElement.src='./video/active.mp4';
 	videoElement.loop = false; 
 
     if (document.getElementById('use-stun').checked) {

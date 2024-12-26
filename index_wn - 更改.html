@@ -77,34 +77,34 @@
     }
 
     .chat-container {
-        flex: 1;
-        min-height: 0;
-        max-height: none;
-        border: none;
-        border-radius: 12px;
-        background-color: #f2f2f2;
-        padding: 20px;
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
-        overflow-y: auto;
-        overflow-x: hidden;
-        margin-bottom: 15px;
-        position: relative;
-        transition: height 0.3s ease;
-        width: calc(100% - 40px);
-        max-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
+	   flex: 1;
+       min-height: 0;
+       max-height: none;
+       border: none;
+       border-radius: 12px;
+       background-color: #f2f2f2;
+       padding: 20px;
+       box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+       overflow-y: auto;
+       overflow-x: hidden;
+       margin-bottom: 15px;
+       position: relative;
+       transition: height 0.3s ease;
+       width: calc(100% - 40px);
+       max-width: 100%;
+       margin-left: auto;
+       margin-right: auto;
     }
 
     .message {
-        margin: 15px 0;
-        padding: 0;
-        border-radius: 0;
-        width: 80%;
-        word-wrap: break-word;
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
+       margin: 15px 0;
+       padding: 0;
+       border-radius: 0;
+       width: 80%;
+       word-wrap: break-word;
+       display: flex;
+       align-items: flex-start;
+       gap: 12px;
     }
 
     .message-avatar {
@@ -525,7 +525,7 @@
 	
 	/*板块布局*/
 	.panel-left{
-		flex: calc(50% - 30px);
+		flex: 50%;
 		border: none;
 		border-radius: 16px 0px 0px 16px;
 		background-color: #f2f2f2;
@@ -538,7 +538,7 @@
 	}
 	
 	.panel{
-		flex: calc(50% - 30px);
+		flex: 50%;
 		border: none;
 		border-radius: 0px 16px 16px 0px;
 		background-color: #f2f2f2;
@@ -566,7 +566,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		height: 35px;
+		height: 50px;
 		border-top: 1px solid #e1e1e1;
 	}
 	
@@ -656,7 +656,7 @@
 	/*选项卡组*/
 	#options-container {
 		transition: all 1s ease;
-	    display: flex; /* 初始时隐藏 */
+	    display: none; /* 初始时隐藏 */
 	    flex-direction: column; /* 垂直排列子元素 */
 		align-items: center;
 		justify-content: center;
@@ -732,7 +732,7 @@
 		z-index: 100;
 	    width: 100%;
 	    position: absolute;
-		bottom: 10px;
+		top: 850px;
 	    height: 250px;
 		overflow: hidden; /* 确保图片不会超出容器 */
 		opacity: 0; /* 初始透明度 */
@@ -907,20 +907,19 @@
 				<video id="video" autoplay playsinline loop muted>
 				  <source src="./video/base.mp4" type="video/mp4">
 				  
-				  
-				  
 				</video>
 				
 				<div class="bottom-icon">
 					Zoom
 					<img src="./icon/move.png" alt="" />
 				</div>
+				
 				<!-- 自定义更换区 -->
 				<div id="banner-container">
 				    <div id = "banner">
 				        <ul>
 				            <li id = "banner0"  class="stableFrist">
-				                <img src="./icon/background1.png" id="img1">
+				                <img src="./icon/defaultBackground.jpg" id="img1">
 				            </li>
 				            <li id = "banner1" class="out">
 				                <img src="./icon/background2.png" id="img2">
@@ -954,6 +953,7 @@
 
         <!-- 右侧聊天面板 -->
         <div class="panel">
+			
             <div class="chat-container" id="chat-messages">
                 <div class="welcome-message">
                     <span>Welcome! You can cdivck the <img src="./icon/voice.png" alt="" /> icon below or enter text to talk to me</span>
@@ -968,6 +968,7 @@
 				</div>
 				<div class="gap"></div> 	<!-- 间隔竖线 -->
 			    <textarea class="form-control" id="message" placeholder="Type your message here..."></textarea>
+				<img id="microphone-icon" src="./icon/microphone.png" alt="microphone" style="display:none;" />
 				<!-- 按钮包裹的提交 -->
 			   <button type="submit" class="btn btn-default" onclick="start()">
 				   <img class="submit" src="./icon/submit.png" alt="submit" />
@@ -981,7 +982,7 @@
 			</form>
 			
 			<!-- 隐藏式选择框 -->
-			<div id="options-container" style="display: none;">
+			<div id="options-container">
 			     <div class="options-group">
 			         <div class="option-item">
 						 <div class="img_container">
@@ -1056,8 +1057,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
 <script>
-	//DDsheng修改的
-
+	//DDsheng修改的	
 	document.addEventListener('DOMContentLoaded', function() {
 	    // 获取 'avatar-background' 元素
 	    var avatarBackground = document.getElementById('avatar-background');
@@ -1147,69 +1147,103 @@
 	
 </script>
 
+
 <script>
-        //记录当前的位置
-        var curImg = 0;
-        //获取轮播图照片的个数
-        var imgLength = document.getElementById("banner").getElementsByTagName("li").length
-		console.log(imgLength);
-        // var time = setInterval(bannerImg,3000);
-        //轮播图
-        function bannerImg(){
+// 背景选择部分
+
+	const API_URL = '/generate-video';
+
+	// 当用户选择一张照片时，获取照片的URL
+	function getCurrentImageSrc() {
+	    const selectedImage = document.getElementById(`banner${curImg}`).querySelector('img');
+	    console.log(selectedImage.src);
+	}
+	
+	// 调用接口并处理响应
+	function callApiWithImage(imageSrc) {
+	    fetch(API_URL, {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({ image: imageSrc }) // 将图片URL作为JSON对象传递
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        // 假设服务器返回的视频URL在data.videoUrl属性中
+	        const videoUrl = data.videoUrl;
+	        // 更新页面上的视频元素的src属性
+	        const videoElement = document.getElementById('video');
+	        videoElement.src = videoUrl;
+	        videoElement.play();
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
+	}
+
+    //记录当前的位置
+    var curImg = 0;
+    //获取轮播图照片的个数
+    var imgLength = document.getElementById("banner").getElementsByTagName("li").length
+	console.log(imgLength);
+    // var time = setInterval(bannerImg,3000);
+    //轮播图
+    function bannerImg(){
+        if(curImg<imgLength-1){
+            curImg++;
+        }else{
+			document.getElementById("banner"+curImg).setAttribute("class","out_2");
+            curImg = 0;
+        }
 		
-            if(curImg<imgLength-1){
-                curImg++;
-            }else{
-				document.getElementById("banner"+curImg).setAttribute("class","out_2");
-                curImg = 0;
-            }
-			
-            document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
-
-            if(curImg-1==0){
-                document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
-            }else if(curImg-1==1||curImg-1==2){
-                document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
-            }else if(curImg-1==3||curImg-1==4){
-				document.getElementById("banner"+(curImg-1)).setAttribute("class","out_2");
-			}
-
+		const currentImageSrc = getCurrentImageSrc();
+		
+        document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
+        if(curImg-1==0){
+            document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
+        }else if(curImg-1==1||curImg-1==2){
+            document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
+        }else if(curImg-1==3||curImg-1==4){
+			document.getElementById("banner"+(curImg-1)).setAttribute("class","out_2");
+		}
+    }
+	
+    //点击下一张
+    document.getElementById("nexImg").onclick = function(){
+        //清除时间定时器
+        // clearInterval(time);
+		
+        bannerImg();
+		
+        // time = setInterval(bannerImg,3000);
+    }
+	
+    //点击上一张
+    document.getElementById("preImg").onclick = function(){
+        // clearInterval(time);
+        if(curImg==0)
+        {
+            curImg = imgLength-1;
+        }else{
+            curImg--;
         }
-
-        //点击下一张
-        document.getElementById("nexImg").onclick = function(){
-            //清除时间定时器
-            // clearInterval(time);
-
-            bannerImg();
-
-            // time = setInterval(bannerImg,3000);
-        }
-
-        //点击上一张
-        document.getElementById("preImg").onclick = function(){
-            // clearInterval(time);
-
-            if(curImg==0)
-            {
-                curImg = imgLength-1;
-            }else{
-                curImg--;
-            }
-			
-            document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
-			
-            if(curImg==imgLength-1)
-            {
-                document.getElementById("banner"+0).setAttribute("class","out");
-            }else if(curImg+1==3||curImg+1==4){
-                document.getElementById("banner"+(curImg+1)).setAttribute("class","out_2");
-            }else if(curImg+1==1||curImg+1==2){
-                document.getElementById("banner"+(curImg+1)).setAttribute("class","out");
-			}
-
-            // time = setInterval(bannerImg,3000)
-        }
+		
+		const currentImageSrc = getCurrentImageSrc();
+		
+        document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
+		
+        if(curImg==imgLength-1)
+        {
+            document.getElementById("banner"+0).setAttribute("class","out");
+        }else if(curImg+1==3||curImg+1==4){
+            document.getElementById("banner"+(curImg+1)).setAttribute("class","out_2");
+        }else if(curImg+1==1||curImg+1==2){
+            document.getElementById("banner"+(curImg+1)).setAttribute("class","out");
+		}
+        // time = setInterval(bannerImg,3000)
+    }
+	
 </script>
        
 
@@ -1486,33 +1520,42 @@
     function adjustChatContainerHeight() {
         const video = document.querySelector('#video');
         const chatContainer = document.querySelector('.chat-container');
-        
-        if (video && chatContainer) {
+        const form = document.querySelector('#echo-form'); // 确保你的表单有一个ID
+    
+        if (video && chatContainer && form) {
             const videoHeight = video.offsetHeight;
-            if (videoHeight > 0) {
+            const formHeight = form.offsetHeight;
+            const adjustedHeight = videoHeight - formHeight - 50px;
+    
+            if (adjustedHeight > 0) {
+                chatContainer.style.height = `${adjustedHeight}px`;
+                chatContainer.style.minHeight = `${adjustedHeight}px`;
+                chatContainer.style.maxHeight = `${videoHeight}px`; // 你可以根据需要调整最大高度
+            } else {
+                // 如果计算出的高度小于或等于0，你可以设置一个最小高度或者直接使用视频的高度
                 chatContainer.style.height = `${videoHeight}px`;
                 chatContainer.style.minHeight = `${videoHeight}px`;
                 chatContainer.style.maxHeight = `${videoHeight}px`;
             }
         }
     }
-
+    
     // 监听视频加载事件
     document.querySelector('#video').addEventListener('loadedmetadata', () => {
         setTimeout(adjustChatContainerHeight, 100); // 迟一点执行以确保视频尺寸已更新
     });
-
+    
     // 创建 ResizeObserver 来监听视频尺寸变化
     const resizeObserver = new ResizeObserver(entries => {
         adjustChatContainerHeight();
     });
-
+    
     // 开始观察视频元素
     resizeObserver.observe(document.querySelector('#video'));
-
+    
     // 监听窗口大小变化
     window.addEventListener('resize', adjustChatContainerHeight);
-
+    
     // 定期检查视频高度（以防其他情况导致的变化）
     setInterval(adjustChatContainerHeight, 1000);
 </script>
