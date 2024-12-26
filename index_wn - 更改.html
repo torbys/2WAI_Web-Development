@@ -1074,6 +1074,7 @@
 	            bannerContainer.classList.add('show');
 	        }
 	    });
+		
 	});
 
 	/*隐藏框的展示*/
@@ -1114,10 +1115,13 @@
 	        }
 			
 	    });
+
+	    var bannerContainer = document.getElementById('banner-container');
 	    
 	    // 点击文档其他区域时重置所有 .img_container 的选中状态
 	    $(document).click(function(event) {
-	        if (!$(event.target).closest('.option-item').length) {
+	        // 检查点击的目标是否在轮播区域内
+	        if (!bannerContainer.contains(event.target) && !$(event.target).closest('.option-item').length) {
 	            $('.img_container').removeClass('selected');
 	        }
 	    });
