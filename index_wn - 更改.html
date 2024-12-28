@@ -605,12 +605,6 @@
 	  width: 30px;
 	  height: 30px;
 	  transition: all 1s;
-	  transform-origin: center;
-	}
-	
-	.more img.rotated {
-	  /* 旋转180度 */
-	  transform: rotate(90deg);
 	}
 	
 	.input-panel{
@@ -1042,9 +1036,9 @@
 					<div class="Featureitem" id="hand_item">
 						<img src="./icon/hand.png" alt="" />
 					</div>
-					<div class="Featureitem" id="like_item">
+					<!-- <div class="Featureitem" id="like_item">
 						<img src="./icon/like.png" alt="" />
-					</div>
+					</div> -->
 				</div>
 				
                 <audio id="audio" autoplay="true"></audio>
@@ -1216,21 +1210,34 @@
 <script>
 	//DDsheng修改的	
 	
-	// 为hand_item添加点击事件
-	document.getElementById('hand_item').addEventListener('click', function() {
-	  var video = document.getElementById('video');
-	  video.src = './video/hand.mp4'; // 直接设置src属性
-	  video.loop = false; // 取消循环播放
-	  video.play(); // 如果视频不是在播放状态，调用play()方法
+	
+	
+	// 外部监听器，用于在视频播放结束后更换视频源
+	var videoElement = document.getElementById('video');
+	videoElement.addEventListener('ended', function() {
+	    // 检查当前视频源是否为like.mp4
+	    if (videoElement.src.endsWith('like.mp4')) {
+	        // 视频播放结束后更换视频源为hand.mp4
+	        videoElement.src = './video/hand.mp4';
+	        videoElement.play(); // 播放hand.mp4
+	    } else if (videoElement.src.endsWith('hand.mp4')) {
+	        // 视频播放结束后更换视频源为base.mp4并设置循环播放
+	        videoElement.src = './video/base.mp4';
+	        videoElement.loop = true; 
+	        videoElement.play(); // 播放base.mp4
+	    }
 	});
 	
-	// 为like_item添加点击事件
-	document.getElementById('like_item').addEventListener('click', function() {
-	  var video = document.getElementById('video');
-	  video.src = './video/like.mp4'; // 直接设置src属性
-	  video.loop = false; // 取消循环播放
-	  video.play(); // 如果视频不是在播放状态，调用play()方法
+	// 为hand_item添加点击事件
+	document.getElementById('hand_item').addEventListener('click', function() {
+	    var video = document.getElementById('video');
+	    
+	    // 首先播放like.mp4
+	    video.src = './video/like.mp4';
+	    video.loop = false; // 取消循环播放
+	    video.play(); // 开始播放视频
 	});
+	
 	
 	/*轮播区域展示*/
 	document.addEventListener('DOMContentLoaded', function() {
@@ -1253,10 +1260,7 @@
 	});
 	
 	/*小按钮旋转*/
-	document.getElementById('moreButton').addEventListener('click', function() {
-	  var img = document.getElementById('more_img');
-	  img.classList.toggle('rotated');
-	});
+
 
 	/*隐藏框的展示*/
 	$('.more').click(function() {
@@ -1275,17 +1279,19 @@
 			optionscontainer.classList.add('open');
 		}
 		
+		 // 检查more_img的src是否已经更换为line.png
+		        if ($('#more_img').attr('src') === './icon/line.png') {
+		            // 如果是line.png，则切换回more.png
+		            $('#more_img').attr('src', './icon/more.png');
+		        } else {
+		            // 否则，切换到line.png
+		            $('#more_img').attr('src', './icon/line.png');
+		        }
+		
 	    // $('#options-container').toggle(); // 使用 jQuery 的 toggle 方法来切换显示和隐藏
 	});
 	
-	var videoElement = document.getElementById('video');
 	
-	 videoElement.addEventListener('ended', function() {
-	    // 更换视频源为 base.mp4 并设置循环播放
-	    videoElement.src = './video/base.mp4';
-	    videoElement.loop = true; 
-	    videoElement.play(); // 播放新视频
-	});
 	
 	
 	/*功能元素选中*/
