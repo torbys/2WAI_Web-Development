@@ -54,9 +54,9 @@ function start() {
         sdpSemantics: 'unified-plan'
     };
 	
-	var videoElement = document.getElementById('video');
-	videoElement.src='./video/active.mp4';
-	videoElement.loop = false; 
+	// var videoElement = document.getElementById('video');
+	// videoElement.src='./video/active.mp4';
+	// videoElement.loop = false; 
 
     if (document.getElementById('use-stun').checked) {
         config.iceServers = [{ urls: ['stun:stun.l.google.com:19302'] }];

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2WAI Demo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="swiper.min.css">
+	
     <style>
     /* 添加在style标签最前面，设置全局字体 */
     * {
@@ -81,7 +83,6 @@
        min-height: 0;
        max-height: none;
        border: none;
-       border-radius: 12px;
        background-color: #f2f2f2;
        padding: 20px;
        box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
@@ -264,7 +265,7 @@
     }
 
     .slider-container input[type="range"] {
-        width: 100%;
+        width: 600px;
         margin: 0;
         height: 6px;
         background: #e0e0e0;
@@ -276,7 +277,7 @@
         -webkit-appearance: none;
         width: 18px;
         height: 18px;
-        background: linear-gradient(135deg, #4568dc, #b06ab3);
+        background: white;
         border-radius: 50%;
         cursor: pointer;
     }
@@ -443,11 +444,11 @@
     }
 
     .dark-mode .slider-container input[type="range"] {
-        background: #454545;
+        background: #e6e6e6;
     }
 
     .dark-mode .slider-container input[type="range"]::-webkit-slider-thumb {
-        background: linear-gradient(135deg, #4568dc, #b06ab3);
+        background: #e6e6e6;
         box-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
 
@@ -462,7 +463,45 @@
         border-color: #4568dc;
         box-shadow: 0 0 5px rgba(69, 104, 220, 0.3);
     }
+	
+	.dark-mode img[src$="voice.png"] {
+	    filter: none; /* 移除滤镜，显示图标的原始颜色 */
+	    opacity: 1; /* 确保图标不透明 */
+	}
+	
+	.dark-mode #options-container.open{
+		border-top: 1px solid #4b4b4b;
+	}
+	
+	.dark-mode .form-inline{
+		border-top: 1px solid #4b4b4b;
+		background-color: #454545;
+	}
+	
+	.dark-mode .form-inline .gap{
+		background-color: #4b4b4b;
+	}
 
+	.dark-mode .container textarea{
+		background-color: #454545;
+	}
+	
+	.dark-mode .container textarea::placeholder{
+		color: white
+	}
+	
+	.dark-mode .Featureitem{
+		background-color: #89898e;
+	}
+	
+	.dark-mode .option-line{
+		border-top: 1px solid #5e5e5e;
+	}
+	
+	.dark-mode .option-line label{
+		color: white;
+	}
+	
 	.control-panel {
       display: none; /* 这将隐藏整个 control-panel div */
     }
@@ -501,6 +540,7 @@
 	    white-space: nowrap;
 	    overflow-x: auto;
 	    overflow-y: hidden;
+		transition: all 1s;
 	}
 	
 	.container button {
@@ -561,7 +601,6 @@
 	
 	/*左侧内容布局*/
 	.form-inline{
-	
 		display: flex;
 		padding: 10px;
 		flex-direction: row;
@@ -570,6 +609,7 @@
 		height: 50px;
 		border-top: 1px solid #e1e1e1;
 		position: relative;
+		transition: all 1s;
 	}
 	
 	.form-inline .gap{
@@ -712,20 +752,21 @@
 	
 	#options-container.open{
 		border-top: 1px solid #e6e6e6;
+		
 		max-height: 200px; /* 增加 max-height 的值，以适应内容和布局 */
 	}
 	
 	.options-group {
-		margin-top: 10px;
+		margin-top: 20px;
 		overflow: hidden;
 	    display: flex; /* 使用flex布局 */
 	    align-items: center; /* 垂直居中对齐 */
 		justify-content: center;
 		gap: 20px;
-	    margin-bottom:10px; /* 每个选项之间的间距 */
 	}
 	
 	.option-item{
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -756,6 +797,8 @@
 	}
 	
 	.option-line{
+		transition: all 1s;
+		border-top: 1px solid #e6e6e6;
 		overflow: hidden;
 		display: flex;
 		flex-direction: row;
@@ -779,152 +822,108 @@
 	
 	
 	/* 轮播选择部分 */
-	#banner-container{
-		display: block;
-		visibility: hidden; /* 初始不可见 */
-		z-index: 100;
-	    width: 100%;
-	    position: absolute;
-		top: 850px;
-	    height: 250px;
-		overflow: hidden;
-		opacity: 0; /* 初始透明度 */
-		transition: all 1s ease; /* 定义过渡效果 */
+	
+	.swiper-container{
+	  width: 500px;
+	  height: auto;
+	  padding:90px 0;
+	  margin-left: auto;
+	  margin-right: auto;
+	  position: absolute;
+	  top: 760px;
+	  left: 50px;
+	  visibility: hidden; /* 初始不可见 */
+	  opacity: 0; /* 初始透明度 */
+	  transition: all 1s ease; /* 定义过渡效果 */
 	}
 	
-	#banner-container.show {
-		opacity: 1; /* 完全不透明 */
-		visibility: visible; /* 可见 */
+	#swiper2,#swiper3{
+		top:780px
 	}
 	
-	
-	#banner-container #banner ul{
-	    list-style: none;
-	    padding-left: 0;
-		display: flex; /* 使li元素水平排列 */
-		justify-content: center; /* 水平居中对齐 */
-		align-items: center; /* 垂直居中对齐 */
-		transition: transform 0.5s ease; /* 平滑过渡效果 */
+	#swiper1 .swiper-slide {
+	  text-align: center;
+	  font-size: 18px;
+	  background: #fff;
+	  
+	  width: 100px;
+	  height: 120px;
+	  border-radius: 12px;
+	  overflow: hidden;
+	  object-fit: cover;
+	  
+	  
+	  /* Center slide text vertically */
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  -webkit-box-pack: center;
+	  -ms-flex-pack: center;
+	  -webkit-justify-content: center;
+	  justify-content: center;
+	  -webkit-box-align: center;
+	  -ms-flex-align: center;
+	  -webkit-align-items: center;
+	  align-items: center;
+	  transition-property:all;
 	}
 	
-	#banner-container #banner ul li{
-		position: relative; /* 改为相对定位 */
-		display: inline-block; /* 或者使用 flex 布局 */
-		margin-right: 10px; 
+	#swiper2 .swiper-slide, #swiper3 .swiper-slide{
+	  text-align: center;
+	  font-size: 18px;
+	  background: #fff;
+	  
+	  width: 80px;
+	  height: 80px;
+	  border-radius: 50%;
+	  overflow: hidden;
+	  
+	  /* Center slide text vertically */
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  -webkit-box-pack: center;
+	  -ms-flex-pack: center;
+	  -webkit-justify-content: center;
+	  justify-content: center;
+	  -webkit-box-align: center;
+	  -ms-flex-align: center;
+	  -webkit-align-items: center;
+	  align-items: center;
+	  transition-property:all;
 	}
 	
-	#banner-container #banner ul li img{
-	    width: 80px;
-	    height: 100px;
-	    border-radius: 12px;
-	    display: block;
+	.#swiper1 img, #swiper3 img{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	
-	/* 为每个图片设置不同的 left 值 */
-	#banner0 {
-	    left: 250px;
+	#swiper2 img{
+		width: 40px;
+		height: 40px;
 	}
 	
-	#banner1 {
-		left: 230px;
+	.swiper-button-prev, .swiper-button-next {
+	  opacity: 0; /* 初始透明度 */
+	  transition: all 1s ease; /* 定义过渡效果 */
+	  top: 910px;
 	}
 	
-	#banner2 {
-		left: -100px;
-	}
-	
-	#banner3 {
-	    left: -310px;
-	}
-	
-	#banner4 {
-	   left: -50px;
+	.color_img{
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	#banner-container #nexImg, #banner-container #preImg {
-	    position: absolute;
-	    opacity: 0.5;
-	    top: 35%; /* 保持顶部位置不变 */
-	    z-index: 10;
-	    transform: translateY(-50%); /* 垂直居中 */
-	}
 	
-	#banner-container #preImg {
-	    left: 35px; /* 向左移动较少的距离 */
-	    transform: translate(-50%, -50%); /* 水平和垂直居中 */
-	}
-	
-	#banner-container #nexImg {
-	    left:455px; /* 向右移动较少的距离 */
-	    transform: translate(50%, -50%); /* 水平和垂直居中 */
-	}
-	#banner-container #nexImg img ,#banner-container #preImg img 
-	{
-	    width: 20px;
-	    height: 20px;
-	}
-	#banner-container #nexImg{
-	    right: 0;
-	}
-	#banner-container #nexImg:hover,#banner-container #preImg:hover{
-	    cursor: pointer;
-	    opacity: 0.5;
-	}
-	#banner-container .jumpBtn{
-		background-color: yellow;
-	    position: absolute;
-	    bottom: 10px;
-	    left: 45%;
-	}
-	#banner-container .jumpBtn ul{
-	    margin-bottom:0;
-	    padding: 0;
-	    list-style: none;
-	}
-	#banner-container .jumpBtn ul li{
-	    font-size: 12px;
-	    text-align: center;
-	    display: inline-block;
-	    width: 15px;
-	    height: 15px;
-	    border-radius: 50px;
-	    opacity: 0.4;
-	}
-	
-	.stableFrist{
-		margin-top: 40px;
-		display: block;
-		width: 100%;
-		height: 250px;
-		transition: all 2s; /* 只对 transform 属性应用过渡效果 */
-		transform: scale(1.2) translateZ(100px);
-	}
-	.stableFrist img{
-		transition: all 2s;
-		border: 5px solid white;
-	}
-	.out{
-	    display: block;
-	    width: 100%;
-	    height: 250px;
-	    transition: all 2s;
-		transform: scale(0.9) translateZ(-50px); /* 缩小并向后位移 */
-	}
-	.out img{
-		transition: all 2s;
-		border: 3px solid white;
-	}
-	.out_2{
-		margin-bottom: 35px;
-		display: block;
-		width: 100%;
-		height: 250px;
-		transition: all 2s;
-		transform: scale(0.7) translateZ(-50px); /* 缩小并向后位移 */
-	}
-	.out_2 img{
-		transition: all 2s;
-		border: 2px solid white;
+	.show{
+		opacity: 1; /* 完全不透明 */
+		visibility: visible; /* 可见 */
 	}
 	
 	/*录音效果*/
@@ -975,19 +974,47 @@
 	  object-fit: cover; /* 保持图片的宽高比，可能会裁剪图片 */
 	}
 	
+	#stop_wrapper{
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		transition: all 0.5s ease-in-out;
+		opacity: 0;
+	}
+	
 	#recordLine{
 		margin-top: 15px;
 		height: 20px;
 		width: 150px;
 	}
 	
-	#stop_record{
-		
+	#activeLine{
+		position: absolute;
+		margin-top: 15px;
+		height: 20px;
+		width: 150px;
 	}
 	
-/* 	#test{
-		background-color: red;
-	} */
+	/*下方的maxlength部件*/
+	.slider-container {
+	  position: relative;
+	}
+	
+	#chunk-size-input {
+	  position: absolute;
+	  top: 500px;
+	  right: 65px;
+	  z-index: 10;
+	  border: none;
+	  box-shadow: none;
+	  font-size: 1em;
+	  /* 其他样式根据您的设计调整 */
+	}
+	
+	.slider-container {
+	    margin-left: 10px; /* 为滑块容器添加左边距 */
+	}
 	
 	/* 更多的CSS样式可以根据需要进行添加，以确保视觉效果符合设计要求。 */
 	
@@ -1027,7 +1054,7 @@
 				</div>
 				
 				<div id="FeatureArea">
-					<div class="Featureitem" id="chane_item">
+					<div class="Featureitem" id="change_item">
 						<img src="./icon/change.png" alt="" />
 					</div>
 					<div class="Featureitem" id="clothes_item">
@@ -1054,35 +1081,88 @@
 				</div>
 				
 				<!-- 自定义更换区 -->
-				<div id="banner-container">
-				    <div id = "banner">
-				        <ul id="test">
-				            <li id = "banner0"  class="stableFrist">
-				                <img src="./icon/defaultBackground.jpg" id="img1">
-				            </li>
-				            <li id = "banner1" class="out">
-				                <img src="./icon/background2.png" id="img2">
-				            </li>
-				            <li id = "banner2" class="out">
-				                <img src="./icon/background3.png" id="img3">
-				            </li>
-							<li id = "banner3" class="out_2">
-							    <img src="./icon/background4.png" id="img4">
-							</li>
-							<li id = "banner4" class="out_2">
-							    <img src="./icon/background5.png" id="img5">
-							</li>
-				        </ul>
-				    </div>
 				
-				    <div id = "nexImg">  <!--向右的箭头-->
-				        <img src="./icon/nexImg.png">
-				    </div>
+				<div class="swiper-container" id='swiper1'>
+				     <div class="swiper-wrapper">
+					   <div class="swiper-slide">
+					   	   <img src="https://waverlyc.xiaomy.net/img/back/6.png" alt="" />
+					   </div>
+				       <div class="swiper-slide">
+						   <img src=https://waverlyc.xiaomy.net/img/back/1.png" alt="" />
+					   </div>
+				       <div class="swiper-slide">
+						   <img src="https://waverlyc.xiaomy.net/img/back/2.png" alt="" />
+					   </div>
+				       <div class="swiper-slide">
+						   <img src="https://waverlyc.xiaomy.net/img/back/3.png" alt="" />
+					   </div>
+				       <div class="swiper-slide">
+						   <img src="https://waverlyc.xiaomy.net/img/back/4.png" alt="" />
+					   </div>	 
+					   <div class="swiper-slide">
+					   		<img src="https://waverlyc.xiaomy.net/img/back/5.png" alt="" />
+					   </div>	 
+				     </div>
+				</div> 
+				<div class="swiper-button-prev swiper-button-white btn_1"></div>
+				<div class="swiper-button-next swiper-button-white btn_1"></div>
 				
-				    <div id = "preImg"> <!--向左的箭头-->
-				        <img src = "./icon/preImg.png">
-				    </div>
-				</div>
+				
+				<div class="swiper-container" id='swiper2'>
+				      <div class="swiper-wrapper">
+				         <div class="swiper-slide">
+				           <div class="color_img" style="background-color: #dc4b4b;">
+				             <img src="./icon/voiceLine.png" alt="" />
+				           </div>
+				         </div>
+				         <div class="swiper-slide">
+				           <div class="color_img" style="background-color: #4bc05e;">
+				             <img src="./icon/voiceLine.png" alt="" />
+				           </div>
+				         </div>
+				         <div class="swiper-slide">
+				           <div class="color_img" style="background-color: #4b66c0;">
+				             <img src="./icon/voiceLine.png" alt="" />
+				           </div>
+				         </div>
+				         <div class="swiper-slide">
+				           <div class="color_img" style="background-color: #ffda48;">
+				             <img src="./icon/voiceLine.png" alt="" />
+				           </div>
+				         </div>
+				         <div class="swiper-slide">
+				           <div class="color_img" style="background-color: #aa6de8;">
+				             <img src="./icon/voiceLine.png" alt="" />
+				           </div>
+				         </div>     
+				       </div>
+				</div> 
+				<div class="swiper-button-prev swiper-button-white btn_2" ></div>
+				<div class="swiper-button-next swiper-button-white btn_2" ></div>
+				
+				<div class="swiper-container" id='swiper3'>
+				      <div class="swiper-wrapper">
+				         <div class="swiper-slide">
+				           <img src="./icon/avatar1.png" alt="" />
+				         </div>
+				         <div class="swiper-slide">
+				           <img src="./icon/avatar1.png" alt="" />
+				         </div>
+				         <div class="swiper-slide">
+				           <img src="./icon/avatar1.png" alt="" />
+				         </div>
+				         <div class="swiper-slide">
+				             <img src="./icon/avatar1.png" alt="" />
+				         </div>
+				         <div class="swiper-slide">
+				           <img src="./icon/avatar1.png" alt="" />
+				         </div>     
+				       </div>
+				</div> 
+				<div class="swiper-button-prev swiper-button-white btn_3" ></div>
+				<div class="swiper-button-next swiper-button-white btn_3" ></div>
+				
+				
 				
 				
             </div>
@@ -1095,7 +1175,7 @@
 			
             <div class="chat-container" id="chat-messages">
                 <div class="welcome-message">
-                    <span>Welcome! You can cdivck the <img src="./icon/voice.png" alt="" /> icon below or enter text to talk to me</span>
+                    <span>Welcome! You can cdivck the <img src="./icon/voice.png" alt="" class="voice_img"/> icon below or enter text to talk to me</span>
                 </div>
                 <!-- 聊天消息将在这里动态添加 -->
             </div>
@@ -1103,9 +1183,10 @@
 			<form class="form-inline" id="echo-form">
 				
 				<div id="image-container">
-				    <img id="voice-image" src="./icon/voice.png" alt="voice" onclick="changeImage()" />
+				    <img id="voice-image" class="voice_img" src="./icon/voice.png" alt="voice" onclick="changeImage()  />
 				</div>
-				<div class="gap"></div> 	<!-- 间隔竖线 -->
+				
+				<div class="gap"></div> 
 				
 			    <textarea class="form-control" id="message" placeholder="Type your message here..."></textarea>
 				
@@ -1113,10 +1194,11 @@
 				    <div id="record_wrapper">
 				        <img id="recording" src="./icon/recording.png" alt="microphone" />
 				    </div>
-				    <div id="stop_wrapper" style="display:none;">
+				    <div id="stop_wrapper">
 				        <div id="stop_record"></div>
 				    </div>
 				    <img id="recordLine" src="./icon/recordLine.png" alt="Line" />
+					<img id="activeLine" src="./icon/vioce_active.gif" alt="动画演示">
 				</div>
 
 
@@ -1142,23 +1224,23 @@
 			<div id="options-container">
 			     <div class="options-group">
 			         <div class="option-item">
-						 <div class="img_container">
-							 <img id="avatar-name" src="./icon/Digital Human.png" alt="" />
+						 <div class="img_container" id="avatar-name">
+							 <img i src="./icon/Digital Human.png" alt="" />
 						 </div>
 			             <label for="avatar-name">Digital Human</label>
 			         </div>
 			     
 			         <div class="option-item">
-						 <div class="img_container">
-						 	<img src="./icon/cude.png" alt="" id="tts-selection"/>
+						 <div class="img_container" id="tts-selection"> 
+						 	<img src="./icon/cude.png" alt="" />
 						 </div>
 						 
 			             <label for="tts-selection">TTS Selection</label>
 			         </div>
 			     
 			         <div class="option-item">
-						 <div class="img_container">
-						 	<img id="avatar-voice" src="./icon/voiceLine.png" alt="" />
+						 <div class="img_container" id="avatar-voice">
+						 	<img  src="./icon/voiceLine.png" alt="" />
 						 </div>
 			             <label for="avatar-voice">TTS Sound</label>
 			         </div>
@@ -1167,16 +1249,16 @@
 					 	 <div class="img_container" id="avatar-background">
 					 	 	<img src="./icon/background.png" alt="" />
 					 	 </div>
-					     <label for="avatar-background">background</label>
+					     <label for="avatar-background">Background</label>
 					 </div>
 					 
 			     </div>
 				 
 				 <!-- 拖拉调节条 -->
 				 <div class="option-line">
-					<label for="chunk-size">Min Length:</label>
+					<label for="chunk-size">Min Length</label>
 					<div class="slider-with-input">
-					    <input type="number" id="chunk-size-input" class="form-control" min="0" max="30" value="10">
+					    <input type="number" id="chunk-size-input" class="form-control" min="0" max="30" value="10" style="display: none;"> 
 					    <div class="slider-container">
 					        <input type="range" id="chunk-size" class="form-control" min="0" max="30" step="1" value="10">
 					    </div>
@@ -1206,6 +1288,29 @@
 <script src="client_wn.js"></script>
 <!-- <script type="text/javascript" src="http://cdn.sockjs.org/sockjs-0.3.4.js"></script> -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="swiper.min.js"></script>
+
+<script>
+	/*max滑块的更改*/
+	document.addEventListener('DOMContentLoaded', function() {
+	  var slider = document.getElementById('chunk-size');
+	  var inputNumber = document.getElementById('chunk-size-input');
+	
+	  // 监听滑块的变化
+	  slider.addEventListener('input', function() {
+	    // 更新输入框的值
+	    inputNumber.value = slider.value;
+	
+	    // 计算滑块的位置
+	    var sliderRect = slider.getBoundingClientRect();
+	    var inputNumberHeight = inputNumber.offsetHeight;
+	
+	    // 设置输入框的位置，使其位于滑块的中心
+	    inputNumber.style.top = `${sliderRect.top + (sliderRect.height - inputNumberHeight) / 2}px`;
+	    inputNumber.style.left = `${sliderRect.left + sliderRect.width}px`;
+	  });
+	});
+</script>
 
 <script>
 	//DDsheng修改的	
@@ -1239,38 +1344,96 @@
 	});
 	
 	
-	/*轮播区域展示*/
+	/*---------------为单个板块添加监听器---------------------*/
 	document.addEventListener('DOMContentLoaded', function() {
-	    // 获取 'avatar-background' 元素
 	    var avatarBackground = document.getElementById('avatar-background');
-	
-	    // 获取轮播区域元素
-	    var bannerContainer = document.getElementById('banner-container');
+	    var avatarVoice = document.getElementById('avatar-voice');
+	    var avatarName = document.getElementById('avatar-name'); // 获取 'avatar-name' 元素
+	    var swiperBox1 = document.getElementById('swiper1');
+	    var swiperBox2 = document.getElementById('swiper2');
+	    var swiperBox3 = document.getElementById('swiper3'); // 获取 'swiper3' 容器
+	    var prevButton = document.querySelector('.swiper-button-prev');
+	    var nextButton = document.querySelector('.swiper-button-next');
 	
 	    // 为 'avatar-background' 添加点击事件监听器
 	    avatarBackground.addEventListener('click', function() {
-	        // 检查是否已经显示，如果显示则隐藏，否则显示
-	        if (bannerContainer.classList.contains('show')) {
-	            bannerContainer.classList.remove('show');
-	        } else {
-	            bannerContainer.classList.add('show');
-	        }
+	        // 隐藏所有swiper
+	        [swiperBox1, swiperBox2, swiperBox3].forEach(function(swiper) {
+	            swiper.classList.remove('show');
+	        });
+	        prevButton.classList.remove('show');
+	        nextButton.classList.remove('show');
+	
+	        // 显示swiper1
+	        swiperBox1.classList.add('show');
+	        prevButton.classList.add('show');
+	        nextButton.classList.add('show');
 	    });
-		
+	
+	    // 为 'avatar-voice' 添加点击事件监听器
+	    avatarVoice.addEventListener('click', function() {
+	        // 隐藏所有swiper
+	        [swiperBox1, swiperBox2, swiperBox3].forEach(function(swiper) {
+	            swiper.classList.remove('show');
+	        });
+	        prevButton.classList.remove('show');
+	        nextButton.classList.remove('show');
+	
+	        // 显示swiper2
+	        swiperBox2.classList.add('show');
+	        prevButton.classList.add('show');
+	        nextButton.classList.add('show');
+	    });
+	
+	    // 为 'avatar-name' 添加点击事件监听器
+	    avatarName.addEventListener('click', function() {
+	        // 隐藏所有swiper
+	        [swiperBox1, swiperBox2, swiperBox3].forEach(function(swiper) {
+	            swiper.classList.remove('show');
+	        });
+	        prevButton.classList.remove('show');
+	        nextButton.classList.remove('show');
+	
+	        // 显示swiper3
+	        swiperBox3.classList.add('show');
+	        prevButton.classList.add('show');
+	        nextButton.classList.add('show');
+	    });
 	});
+	
 	
 	/*小按钮旋转*/
 
 
-	/*隐藏框的展示*/
+	/*-------------------------------------隐藏框的展示-------------------------------------*/
 	$('.more').click(function() {
 			
 		// 获取轮播区域元素
-		var bannerContainer = document.getElementById('banner-container');
-		// 检查是否已经显示，如果显示则隐藏，否则显示
-		if (bannerContainer.classList.contains('show')) {
-		    bannerContainer.classList.remove('show');
-		}
+		  var buttons1 = document.querySelectorAll('.btn_1');
+		  var swiperBox1 = document.getElementById('swiper1');
+		
+		  var buttons2 = document.querySelectorAll('.btn_2');
+		  var swiperBox2 = document.getElementById('swiper2');
+		  
+		  var buttons3 = document.querySelectorAll('.btn_3');
+		  var swiperBox3 = document.getElementById('swiper3');
+		  
+		 function hideSwiperAndButtons(swiperBox, buttons) {
+		    // 如果轮播区域显示，则隐藏轮播区域和所有按钮
+		    if (swiperBox.classList.contains('show')) {
+		      swiperBox.classList.remove('show');
+		      buttons.forEach(function(button) {
+		        button.classList.remove('show');
+		      });
+		    }
+		  }
+		  
+		// 隐藏swiper1和对应的按钮
+		hideSwiperAndButtons(swiperBox1, buttons1);
+		// 隐藏swiper2和对应的按钮
+		hideSwiperAndButtons(swiperBox2, buttons2);
+		//
+		hideSwiperAndButtons(swiperBox3, buttons3);
 		
 		var optionscontainer = document.getElementById('options-container');
 		if(optionscontainer.classList.contains('open')){
@@ -1299,29 +1462,69 @@
 	    // 功能元素选中
 	    $('.option-item').click(function() {
 			
+			/*整体获取和删除*/
 	        var imgContainer = $(this).find('.img_container');
+			
+			var swiperBox = document.querySelector('.swiper-container');
+			var prevButton = document.querySelector('.swiper-button-prev');
+			var nextButton = document.querySelector('.swiper-button-next');
+			
 			
 	        if (imgContainer.hasClass('selected')) {
 	            imgContainer.removeClass('selected');
-				bannerContainer.classList.remove('show');
+				swiperBox.classList.remove('show');
+				prevButton.classList.remove('show');
+				nextButton.classList.remove('show');
 	        } else {
 	            $('.img_container').removeClass('selected');
 	            imgContainer.addClass('selected');
-				
 	        }
 			
 	    });
 
-	    var bannerContainer = document.getElementById('banner-container');
-	    
 	    // 点击文档其他区域时重置所有 .img_container 的选中状态
 	    $(document).click(function(event) {
-	        // 检查点击的目标是否在轮播区域内
-	        if (!bannerContainer.contains(event.target) && !$(event.target).closest('.option-item').length) {
-	            $('.img_container').removeClass('selected');
-				bannerContainer.classList.remove('show');
-	        }
+			// 获取所有btn_1和btn_2类的按钮
+			  var buttons1 = document.querySelectorAll('.btn_1');
+			  var buttons2 = document.querySelectorAll('.btn_2');
+			  var buttons3 = document.querySelectorAll('.btn_3');
+			
+			  // 获取swiper1和swiper2的容器
+			  var swiperBox1 = document.getElementById('swiper1');
+			  var swiperBox2 = document.getElementById('swiper2');
+			  var swiperBox3 = document.getElementById('swiper3');
+	       
+			 // 检查点击的目标是否在swiper1或swiper2的按钮或容器内
+			  var isInsideSwiper1 = Array.from(buttons1).some(function(button) { return button.contains(event.target); }) ||
+			                       swiperBox1.contains(event.target);
+			  var isInsideSwiper2 = Array.from(buttons2).some(function(button) { return button.contains(event.target); }) ||
+			                       swiperBox2.contains(event.target);
+			  var isInsideSwiper3 = Array.from(buttons3).some(function(button) { return button.contains(event.target); }) ||
+			                     swiperBox3.contains(event.target);
+			
+			  // 如果点击的目标不在swiper1和swiper2的按钮或容器内
+			  if (!isInsideSwiper3&&!isInsideSwiper1 && !isInsideSwiper2 && !$(event.target).closest('.option-item').length) {
+			    // 移除所有.img_container的selected类
+			    document.querySelectorAll('.img_container').forEach(function(container) {
+			      container.classList.remove('selected');
+			    });
+			    // 移除swiper1和swiper2的show类
+			    swiperBox1.classList.remove('show');
+			    swiperBox2.classList.remove('show');
+				swiperBox3.classList.remove('show');
+			    // 移除所有.btn_1和.btn_2按钮的show类
+			    Array.from(buttons1).forEach(function(button) {
+			      button.classList.remove('show');
+			    });
+			    Array.from(buttons2).forEach(function(button) {
+			      button.classList.remove('show');
+			    });
+				Array.from(buttons3).forEach(function(button) {
+				  button.classList.remove('show');
+				});
+			  }
 	    });
+		
 	});
 
 	
@@ -1329,6 +1532,8 @@
 	var voiceFlag = true; 
 	
 	function changeImage() {
+		console.log("yes");
+		
 	    // 获取图片元素
 	    var image = document.getElementById('voice-image');
 		
@@ -1357,107 +1562,202 @@
 		    message.classList.add('hidden');
 		    recordGroup.classList.remove('hidden');
 		}
+		
+		var recordWrapper = document.getElementById('record_wrapper');
+		var stopWrapper = document.getElementById('stop_wrapper');
+		var activeLine = document.getElementById('activeLine');
+			
+		recordWrapper.addEventListener('click', function() {
+		    // 切换 record_wrapper 和 stop_wrapper 的显示状态
+		    if (recordWrapper.classList.contains('show')) {
+		        recordWrapper.classList.remove('show');
+		        stopWrapper.classList.add('show');
+		        activeLine.classList.add('show');
+		    } else {
+		        recordWrapper.classList.add('show');
+		        stopWrapper.classList.remove('show');
+		        activeLine.classList.remove('show');
+		    }
+		});
+		
 	}
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	    var voiceImage = document.getElementById('voice-image');
+	    voiceImage.addEventListener('click', changeImage);
+	});
 	
 </script>
 
-
+<!-- 为了分别获取元素这里设置3个js来单独控制 -->
 <script>
 // 背景选择部分
-
-	const API_URL = '/generate-video';
-
-	// 当用户选择一张照片时，获取照片的URL
-	function getCurrentImageSrc() {
-	    const selectedImage = document.getElementById(`banner${curImg}`).querySelector('img');
-	    console.log(selectedImage.src);
-	}
+	effect = 1
+	  var swiper1 = new Swiper('#swiper1', {
+	  loop: true,
+	  speed: 1500,
+	  slidesPerView: 5,
+	  spaceBetween: 30,
+	  centeredSlides : true,
+	  watchSlidesProgress : true,
+	  on: {
+	    setTranslate: function(){
+			slides = this.slides
+			for(i=0; i< slides.length; i++){
+				slide = slides.eq(i)
+				progress = slides[i].progress
+				//slide.html(progress.toFixed(2)); 看清楚progress是怎么变化的
+				    slide.css({'opacity': '','background': ''});slide.transform('');//清除样式
+					
+					if(effect == 1){
+					    slide.transform('scale('+(1 - Math.abs(progress)/8)+')');  
+					}else if(effect == 2){
+						slide.css('opacity',(1-Math.abs(progress)/6));
+					    slide.transform('translate3d(0,'+ Math.abs(progress)*20+'px, 0)');  
+					}
+					else if(effect == 3){
+					    slide.transform('rotate('+ progress*30+'deg)');  
+					}else if(effect == 4){
+						slide.css('background','rgba('+ (255 - Math.abs(progress)*20) +','+ (127 + progress*32) +',' + Math.abs(progress)*64 + ')');
+					}
+					
+				}	
+		},
+		setTransition: function(transition) {
+			for (var i = 0; i < this.slides.length; i++) {
+				var slide = this.slides.eq(i)
+				slide.transition(transition);
+			}
+		},
+		slideChangeTransitionEnd: function () {
+		    // 获取当前激活的slide的索引
+		    var activeIndex = this.activeIndex;
 	
-	// 调用接口并处理响应
-	function callApiWithImage(imageSrc) {
-	    fetch(API_URL, {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/json'
-	        },
-	        body: JSON.stringify({ image: imageSrc }) // 将图片URL作为JSON对象传递
-	    })
-	    .then(response => response.json())
-	    .then(data => {
-	        // 假设服务器返回的视频URL在data.videoUrl属性中
-	        const videoUrl = data.videoUrl;
-	        // 更新页面上的视频元素的src属性
-	        const videoElement = document.getElementById('video');
-	        videoElement.src = videoUrl;
-	        videoElement.play();
-	    })
-	    .catch(error => {
-	        console.error('Error:', error);
-	    });
-	}
-
-    //记录当前的位置
-    var curImg = 0;
-    //获取轮播图照片的个数
-    var imgLength = document.getElementById("banner").getElementsByTagName("li").length
-	console.log(imgLength);
-    // var time = setInterval(bannerImg,3000);
-    //轮播图
-    function bannerImg(){
-        if(curImg<imgLength-1){
-            curImg++;
-        }else{
-			document.getElementById("banner"+curImg).setAttribute("class","out_2");
-            curImg = 0;
-        }
-		
-		const currentImageSrc = getCurrentImageSrc();
-		
-        document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
-        if(curImg-1==0){
-            document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
-        }else if(curImg-1==1||curImg-1==2){
-            document.getElementById("banner"+(curImg-1)).setAttribute("class","out");
-        }else if(curImg-1==3||curImg-1==4){
-			document.getElementById("banner"+(curImg-1)).setAttribute("class","out_2");
+		    // 获取当前激活的slide元素
+		    var activeSlide = this.slides[activeIndex];
+	
+		    // 获取当前激活的slide中的图片元素
+		    var activeImage = activeSlide.querySelector('img');
+	
+		    // 打印图片的src属性
+		    console.log(activeImage.src);
 		}
-    }
-	
-    //点击下一张
-    document.getElementById("nexImg").onclick = function(){
-        //清除时间定时器
-        // clearInterval(time);
-		
-        bannerImg();
-		
-        // time = setInterval(bannerImg,3000);
-    }
-	
-    //点击上一张
-    document.getElementById("preImg").onclick = function(){
-        // clearInterval(time);
-        if(curImg==0)
-        {
-            curImg = imgLength-1;
-        }else{
-            curImg--;
-        }
-		
-		const currentImageSrc = getCurrentImageSrc();
-		
-        document.getElementById("banner"+curImg).setAttribute("class","stableFrist");
-		
-        if(curImg==imgLength-1)
-        {
-            document.getElementById("banner"+0).setAttribute("class","out");
-        }else if(curImg+1==3||curImg+1==4){
-            document.getElementById("banner"+(curImg+1)).setAttribute("class","out_2");
-        }else if(curImg+1==1||curImg+1==2){
-            document.getElementById("banner"+(curImg+1)).setAttribute("class","out");
-		}
-        // time = setInterval(bannerImg,3000)
-    }
-	
+	  },
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	     pagination: {
+	       el: '.swiper-pagination',
+	       clickable: true,
+	     },
+	   });
+</script>
+
+<!-- 轮播图2 -->
+<script>
+// 声音选择部分
+	effect = 1
+	  var swiper2 = new Swiper('#swiper2', {
+	  loop: true,
+	  speed: 1500,
+	  slidesPerView: 5,
+	  spaceBetween: 30,
+	  centeredSlides : true,
+	  watchSlidesProgress : true,
+	  on: {
+	    setTranslate: function(){
+			slides = this.slides
+			for(i=0; i< slides.length; i++){
+				slide = slides.eq(i)
+				progress = slides[i].progress
+				//slide.html(progress.toFixed(2)); 看清楚progress是怎么变化的
+				    slide.css({'opacity': '','background': ''});slide.transform('');//清除样式
+					
+					if(effect == 1){
+					    slide.transform('scale('+(1 - Math.abs(progress)/8)+')');  
+					}else if(effect == 2){
+						slide.css('opacity',(1-Math.abs(progress)/6));
+					    slide.transform('translate3d(0,'+ Math.abs(progress)*20+'px, 0)');  
+					}
+					else if(effect == 3){
+					    slide.transform('rotate('+ progress*30+'deg)');  
+					}else if(effect == 4){
+						slide.css('background','rgba('+ (255 - Math.abs(progress)*20) +','+ (127 + progress*32) +',' + Math.abs(progress)*64 + ')');
+					}
+					
+				}	
+		},
+		setTransition: function(transition) {
+			for (var i = 0; i < this.slides.length; i++) {
+				var slide = this.slides.eq(i)
+				slide.transition(transition);
+			}
+		},
+	  },
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	     pagination: {
+	       el: '.swiper-pagination',
+	       clickable: true,
+	     },
+	   });
+	   
+</script>
+
+<!-- 轮播图3 -->
+<script>
+// 人物选择部分
+	effect = 1
+	  var swiper3 = new Swiper('#swiper3', {
+	  loop: true,
+	  speed: 1500,
+	  slidesPerView: 5,
+	  spaceBetween: 30,
+	  centeredSlides : true,
+	  watchSlidesProgress : true,
+	  on: {
+	    setTranslate: function(){
+			slides = this.slides
+			for(i=0; i< slides.length; i++){
+				slide = slides.eq(i)
+				progress = slides[i].progress
+				//slide.html(progress.toFixed(2)); 看清楚progress是怎么变化的
+				    slide.css({'opacity': '','background': ''});slide.transform('');//清除样式
+					
+					if(effect == 1){
+					    slide.transform('scale('+(1 - Math.abs(progress)/8)+')');  
+					}else if(effect == 2){
+						slide.css('opacity',(1-Math.abs(progress)/6));
+					    slide.transform('translate3d(0,'+ Math.abs(progress)*20+'px, 0)');  
+					}
+					else if(effect == 3){
+					    slide.transform('rotate('+ progress*30+'deg)');  
+					}else if(effect == 4){
+						slide.css('background','rgba('+ (255 - Math.abs(progress)*20) +','+ (127 + progress*32) +',' + Math.abs(progress)*64 + ')');
+					}
+					
+				}	
+		},
+		setTransition: function(transition) {
+			for (var i = 0; i < this.slides.length; i++) {
+				var slide = this.slides.eq(i)
+				slide.transition(transition);
+			}
+		},
+	  },
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	     pagination: {
+	       el: '.swiper-pagination',
+	       clickable: true,
+	     },
+	   });
+	   
 </script>
        
 
@@ -1705,21 +2005,24 @@
     });
 </script> -->
 
+<!-- ----------------------------切换黑暗模式------------------------------ -->
 <script>
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    const themeIcon = themeToggleBtn.querySelector('i');
-
+    const changeItem = document.getElementById('change_item');
+    const themeIcon = changeItem.querySelector('i');
+	var flag=false;
+	
     // 检查本地存储中的主题设置
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
+		flag=true;
         document.body.classList.add('dark-mode');
         themeIcon.classList.replace('fa-moon', 'fa-sun');
     }
-
-    themeToggleBtn.addEventListener('click', () => {
+	
+    changeItem.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
-        
-        // 更新图标
+		flag=!flag;
+		changeImagedark()
         if (document.body.classList.contains('dark-mode')) {
             themeIcon.classList.replace('fa-moon', 'fa-sun');
             localStorage.setItem('theme', 'dark');
@@ -1728,6 +2031,25 @@
             localStorage.setItem('theme', 'light');
         }
     });
+	
+
+	function changeImagedark() {
+	    // 获取所有类名为 'voice_img' 的 img 元素
+	    const images = document.querySelectorAll('.voice_img');
+	  
+	    // 遍历这些 img 元素
+	    images.forEach(image => {
+	        // 检查每个 img 的 src 是否以 './icon/voice.png' 结尾
+	        if (image.src.endsWith('/voice.png')&&flag) {
+	            // 替换 src 为 './icon/voice_dark.png'
+	            image.src = image.src.replace('/voice.png', '/voice_dark.png');
+	        }
+			if(image.src.endsWith('/voice_dark.png')&&!flag){
+				image.src = image.src.replace('/voice_dark.png', '/voice.png');
+			}
+	    });
+	}
+	
 </script>
 <script>
     // 添加视频高度监听和聊天容器高度整功能
