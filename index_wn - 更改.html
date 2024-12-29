@@ -919,21 +919,29 @@
 		align-items: center;
 		justify-content: center;
 	}
-
-	
-	.show{
-		opacity: 1; /* 完全不透明 */
-		visibility: visible; /* 可见 */
-	}
 	
 	/*录音效果*/
 	#stop_record{
-		height: 30px;
-		width: 30px;
-		border-radius: 66px;
+		height: 25px;
+		width: 25px;
+		border-radius: 8px;
 		background: linear-gradient(145deg, #f0f0f0, #cacaca);
 		box-shadow:  5px 5px 26px #6e6e6e,
 		             -5px -5px 26px #ffffff;
+	}
+	
+	#stop_wrapper{
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		left: 0px;
+		background-color: red;
+		opacity: 0;
 	}
 	
 	#recordGroup, #message {
@@ -949,12 +957,10 @@
 		top:8px;
 	}
 	
-	.hidden {
-	    opacity: 0;
-	    visibility: hidden;
-	}
 	
-	#record_wrapper,#stop_wrapper{
+	
+	#record_wrapper{
+		transition: all 1s;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -963,6 +969,16 @@
 		width: 50px;
 		border-radius: 50%;
 		background-color: #5865f2;
+	}
+			
+	#record_wrapper::hover{
+		transform: scale(1.1);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+	}
+	
+	#record_wrapper::active{
+		transform: scale(0.9);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* 更深的阴影效果 */
 	}
 	
 	#record_wrapper img,#stop_wrapper img{
@@ -974,14 +990,7 @@
 	  object-fit: cover; /* 保持图片的宽高比，可能会裁剪图片 */
 	}
 	
-	#stop_wrapper{
-		position: absolute;
-		display: flex;
-		justify-content: center;
-		flex-direction: row;
-		transition: all 0.5s ease-in-out;
-		opacity: 0;
-	}
+	
 	
 	#recordLine{
 		margin-top: 15px;
@@ -993,29 +1002,38 @@
 		position: absolute;
 		margin-top: 15px;
 		height: 20px;
-		width: 150px;
+		width: 160px;
+		opacity: 0;
 	}
 	
 	/*下方的maxlength部件*/
 	.slider-container {
 	  position: relative;
+	  margin-left: 10px; /* 为滑块容器添加左边距 */
 	}
 	
 	#chunk-size-input {
 	  position: absolute;
-	  top: 500px;
-	  right: 65px;
-	  z-index: 10;
-	  border: none;
-	  box-shadow: none;
+	  left: 20px;
+	  bottom: 20px;
+	  z-index: 100;
 	  font-size: 1em;
 	  /* 其他样式根据您的设计调整 */
 	}
 	
-	.slider-container {
-	    margin-left: 10px; /* 为滑块容器添加左边距 */
+	.slider-with-input{
+		position: relative;
 	}
 	
+	.show{
+		opacity: 1; /* 完全不透明 */
+		visibility: visible;
+	}
+	
+	.hidden {
+	    opacity: 0;
+		visibility: hidden;
+	}
 	/* 更多的CSS样式可以根据需要进行添加，以确保视觉效果符合设计要求。 */
 	
     </style>
@@ -1292,24 +1310,7 @@
 
 <script>
 	/*max滑块的更改*/
-	document.addEventListener('DOMContentLoaded', function() {
-	  var slider = document.getElementById('chunk-size');
-	  var inputNumber = document.getElementById('chunk-size-input');
 	
-	  // 监听滑块的变化
-	  slider.addEventListener('input', function() {
-	    // 更新输入框的值
-	    inputNumber.value = slider.value;
-	
-	    // 计算滑块的位置
-	    var sliderRect = slider.getBoundingClientRect();
-	    var inputNumberHeight = inputNumber.offsetHeight;
-	
-	    // 设置输入框的位置，使其位于滑块的中心
-	    inputNumber.style.top = `${sliderRect.top + (sliderRect.height - inputNumberHeight) / 2}px`;
-	    inputNumber.style.left = `${sliderRect.left + sliderRect.width}px`;
-	  });
-	});
 </script>
 
 <script>
@@ -1465,16 +1466,28 @@
 			/*整体获取和删除*/
 	        var imgContainer = $(this).find('.img_container');
 			
-			var swiperBox = document.querySelector('.swiper-container');
-			var prevButton = document.querySelector('.swiper-button-prev');
-			var nextButton = document.querySelector('.swiper-button-next');
-			
+			var swiperBoxes = document.querySelectorAll('.swiper-container');
+			// 选择所有的 .swiper-button-prev 元素
+			var prevButtons = document.querySelectorAll('.swiper-button-prev');
+			// 选择所有的 .swiper-button-next 元素
+			var nextButtons = document.querySelectorAll('.swiper-button-next');
 			
 	        if (imgContainer.hasClass('selected')) {
 	            imgContainer.removeClass('selected');
-				swiperBox.classList.remove('show');
-				prevButton.classList.remove('show');
-				nextButton.classList.remove('show');
+				// 遍历所有的 .swiper-container 元素，并移除 'show' 类
+				swiperBoxes.forEach(function(box) {
+				    box.classList.remove('show');
+				});
+				
+				// 遍历所有的 .swiper-button-prev 元素，并移除 'show' 类
+				prevButtons.forEach(function(button) {
+				    button.classList.remove('show');
+				});
+				
+				// 遍历所有的 .swiper-button-next 元素，并移除 'show' 类
+				nextButtons.forEach(function(button) {
+				    button.classList.remove('show');
+				});
 	        } else {
 	            $('.img_container').removeClass('selected');
 	            imgContainer.addClass('selected');
@@ -1568,6 +1581,8 @@
 		var activeLine = document.getElementById('activeLine');
 			
 		recordWrapper.addEventListener('click', function() {
+			console.log("sure")
+			
 		    // 切换 record_wrapper 和 stop_wrapper 的显示状态
 		    if (recordWrapper.classList.contains('show')) {
 		        recordWrapper.classList.remove('show');
